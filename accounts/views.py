@@ -22,7 +22,7 @@ def register(request):
                     messages.error(request , 'Email already registered!')
                     return redirect('register')
                 else:
-                    #all good place user in model
+                    #all good | place user in model
                    user = User.objects.create_user(username=username , password=password , email=email ,  first_name=first_name , last_name=last_name)
                    user.save()
                    messages.success(request , 'Registration successful!!')
@@ -51,4 +51,7 @@ def dashboard(request):
     return render(request , 'accounts/dashboard.html')
 
 def logout(request):
-    return redirect('index')
+    if request.method == 'POST':
+        auth.logout(request)
+        messages.success(request, 'You are now logged out')
+        return redirect('index')
