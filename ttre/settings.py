@@ -154,3 +154,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'arnavawasthy61@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv("DJANGO_SECRET_KEY")
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#local settings
+try:
+    from .local_settings import *
+except ImportError:
+    pass
