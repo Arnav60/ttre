@@ -10,12 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from django.contrib.messages import constants as messages
+from dotenv import load_dotenv
+import django_heroku
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-import os
-from dotenv import load_dotenv
 load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -61,7 +63,7 @@ ROOT_URLCONF = 'ttre.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR , 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,9 +86,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ttredb',
-        'USER' : 'postgres' ,
-        'PASSWORD' : '123123123' ,
-        'HOST' : 'localhost'
+        'USER': 'postgres',
+        'PASSWORD': '123123123',
+        'HOST': 'localhost'
     }
 }
 
@@ -127,26 +129,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR , 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR , 'ttre/static')
+    os.path.join(BASE_DIR, 'ttre/static')
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#Media files
-MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-#Messages
-from django.contrib.messages import constants as messages
+# Messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
-#Send Email
+# Send Email
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST = 'smtp.gmail.com'
@@ -154,8 +155,11 @@ EMAIL_HOST_USER = 'arnavawasthy61@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv("MAIL_SECRET_KEY")
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-#local settings
+# local settings
 try:
     from .local_settings import *
 except ImportError:
     pass
+
+# Activate Django-Heroku
+django_heroku.settings(locals())
